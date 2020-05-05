@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tapasweni Pathak - Projects</title>
+    <link rel="stylesheet" type="text/css" href="assets/reset.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/grid.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/style.min.css">
+    <script type="text/javascript" src="assets/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="assets/strftime.min.js"></script>
+    <script type="text/javascript">
+    (function ($, undefined) {
+
+      var repoUrls = {
+        'Instachart': 'http://instachart.herokuapp.com',
+        'Showlist': 'http://facebookhack.herokuapp.com',
+      };
+
+      function repoUrl(repo) {
+        return repoUrls[repo.name] || repo.html_url;
+      }
+
+      var repoDescriptions = {};
+
+      function repoDescription(repo) {
+        return repoDescriptions[repo.name] || repo.description;
+      }
+
+      function addRecentlyUpdatedRepo(e){var t=$("<li>");var n=$("<a>").attr("href",e.html_url).text(e.name);t.append($("<span>").addClass("name").append(n));var r=$("<a>").attr("href",e.html_url+"/commits").text(strftime("%h %e, %Y",e.pushed_at));t.append($("<span>").addClass("time").append(r));t.append('<span class="bullet">&sdot;</span>');var i=$("<a>").attr("href",e.html_url+"/watchers").text(e.watchers+" stargazers");t.append($("<span>").addClass("watchers").append(i));t.append('<span class="bullet">&sdot;</span>');var s=$("<a>").attr("href",e.html_url+"/network").text(e.forks+" forks");t.append($("<span>").addClass("forks").append(s));t.appendTo("#recently-updated-repos")}function addRepo(e){var t=$("<li>").addClass("repo grid-1 "+(e.language||"").toLowerCase());var n=$("<a>").attr("href",repoUrl(e)).appendTo(t);n.append($("<h2>").text(e.name));n.append($("<h3>").text(e.language));n.append($("<p>").text(repoDescription(e)));t.appendTo("#repos")}function addRepos(e,t){e=e||[];t=t||1;var n="https://api.github.com/users/tapasweni-pathak/repos?callback=?"+"&per_page=100"+"&page="+t;$.getJSON(n,function(n){if(n.data&&n.data.length>0){e=e.concat(n.data);addRepos(e,t+1)}else{$(function(){$("#num-repos").text(e.length);$.each(e,function(e,t){t.pushed_at=new Date(t.pushed_at);var n=1.146*Math.pow(10,-9);var r=new Date-Date.parse(t.pushed_at);var i=new Date-Date.parse(t.created_at);var s=1;var o=1.314*Math.pow(10,7);t.hotness=s*Math.pow(Math.E,-1*n*r);t.hotness+=o*t.watchers/i});e.sort(function(e,t){if(e.hotness<t.hotness)return 1;if(t.hotness<e.hotness)return-1;return 0});$.each(e,function(e,t){addRepo(t)});e.sort(function(e,t){if(e.pushed_at<t.pushed_at)return 1;if(t.pushed_at<e.pushed_at)return-1;return 0});$.each(e.slice(0,3),function(e,t){addRecentlyUpdatedRepo(t)})})}})}function randomItem(e){return e[Math.floor(Math.random()*e.length)]}function flyzone(){if(!$flyzone){$flyzone=$("<div>").attr("id","flyzone").prependTo(document.body)}return $flyzone}function randomOpacity(e){var t=Math.random();while(t<e){t=Math.random()}return t}addRepos();var $flyzone;var sizes=["smaller","small","medium","large","fat"];var sizeDimensions={smaller:50,small:80,medium:130,large:200,fat:300}
+
+
+    })(jQuery);
+    </script>
+  </head>
+  <body>
+    <div id="wrapper" class="grid clearfix">
+
+      <div class="grid grid-4">
+
+        <div id="main" class="grid-1 alpha header">
+          <h1><a href="http://tapasweni-pathak.github.io/">Tapasweni Pathak</a></h1>
+          <p>
+          <a href="http://tapasweni-pathak.github.io/#about">About</a><br />
+          <a href="http://tapaswenipathak.wordpress.com/">Blog</a><br />
+          <a href="mailto:tapaswenipathak@gmail.com">Contact</a>
+          </p>
+        </div>
+
+        <div id="statistics" class="grid-1 alpha header">
+          <h1>Statistics</h1>
+          <p>
+            <a href="https://github.com/tapasweni-pathak/repositories"><span id="num-repos"><img src="assets/spinner.gif" /></span> public repos</a>
+            <br>
+          </p>
+          <p><a href="https://github.com/tapasweni-pathak">GitHub: tapasweni-pathak</a></p>
+        </div>
+
+        <div id="recently-updated" class="grid-2 omega header">
+          <h1>Recently updated <a href="https://github.com/tapasweni-pathak">View All on GitHub</a></h1>
+          <ol id="recently-updated-repos"></ol>
+        </div>
+      </div>
+
+      <ol id="repos"></ol>
+    </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-50435266-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </body>
+</html>
